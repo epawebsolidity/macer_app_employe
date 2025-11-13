@@ -1,13 +1,12 @@
 export default function Footer() {
   return (
-      <footer className="bg-[#f9140D] text-yellow-100">
+    <footer className="bg-[#f9140D] text-yellow-100">
       <div className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center md:items-start gap-8">
         {/* Brand */}
         <div className="flex flex-col items-center md:items-start">
           <h2 className="text-2xl font-extrabold mb-2">Mancer App</h2>
           <p className="text-sm max-w-xs text-center md:text-left exo-2-400">
-            Platform berita terpercaya yang selalu memberikan informasi terkini
-            seputar teknologi, bisnis, dan dunia.
+           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Mollitia neque ad, soluta deleniti nesciunt accusantium sequi ducimus culpa quidem ut doloremque sunt illum laboriosam quasi facere tenetur. Labore, est in.
           </p>
         </div>
 
@@ -64,7 +63,7 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-yellow-200/50 text-center exo-2-400 py-4 text-xs text-yellow-200 select-none">
-        © {new Date().getFullYear()} NewsApp. All rights reserved.
+        © {new Date().getFullYear()} Epa Mancer. All rights reserved.
       </div>
     </footer>
   );

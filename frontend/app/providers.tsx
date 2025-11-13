@@ -20,7 +20,6 @@ const config = getDefaultConfig({
     chains: [eduChainTestnet],
     ssr: true,
 });
-
 const queryClient = new QueryClient();
 
 function Providers({ children }: { children: React.ReactNode }) {

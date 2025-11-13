@@ -26,7 +26,6 @@ export default function LoginPage() {
       const { user, error: loginError } = await loginMancer(email, password);
       setLoading(false);
       console.log("User setelah login:", user);
-
       if (loginError) {
         setError(loginError);
       } else {
@@ -38,9 +37,8 @@ export default function LoginPage() {
           router.push("/");
         }
       }
-    } catch (err: unknown) {
-      setLoading(false);
-      setError(err instanceof Error ? err.message : "Unknown error");
+    } catch (err) {
+      console.error("Error login:", err);
     }
   };
 
@@ -69,13 +67,11 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* 🔲 Container Form */}
         <div className="relative w-full flex justify-center -mt-24 z-10 px-8 sm:px-0 sm:-mt-0">
           <div className="bg-white w-full max-w-md rounded-3xl shadow-lg p-6 sm:p-8">
             <div className="mb-6">
               <h1 className="text-gray-800 text-2xl font-bold">Sign In</h1>
             </div>
-
             <form className="space-y-4" onSubmit={handleSubmit}>
               <input
                 type="email"
@@ -84,7 +80,6 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-
               <input
                 type="password"
                 placeholder="Password"
@@ -92,7 +87,6 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-
               <button
                 type="submit"
                 disabled={loading}
@@ -100,7 +94,6 @@ export default function LoginPage() {
               >
                 {loading ? "Logging in..." : "Login"}
               </button>
-
               {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             </form>
           </div>

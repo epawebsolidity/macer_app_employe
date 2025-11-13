@@ -1,20 +1,10 @@
 "use client";
 
 import logo from "@/public/assets/images/logo-mancer.png";
+import { NavbarProps } from "@/types/NavbarProps";
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Image from "next/image";
 import Link from "next/link";
-
-interface NavItem {
-  to: string;
-  label: string;
-}
-
-interface NavbarProps {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  navItems: NavItem[];
-}
 
 const handleLogout = () => {
   console.log("Logout clicked");
@@ -24,6 +14,8 @@ export default function Navbar({ isOpen, setIsOpen, navItems }: NavbarProps) {
   return (
     <div className="relative">
       <nav className="fixed top-0 left-0 z-50 w-full bg-[#f9140D] text-white">
+
+        {/* Navbar Desktop Mancer */}
         <div className="mx-auto max-w-5xl flex items-center justify-between px-[10px] py-4 sm:px-[10px] relative">
           <button
             className="sm:hidden w-10 h-10 flex items-center justify-center text-white text-3xl"
@@ -31,7 +23,6 @@ export default function Navbar({ isOpen, setIsOpen, navItems }: NavbarProps) {
           >
             {isOpen ? "×" : "☰"}
           </button>
-
           <Image
             src={logo}
             alt="Logo Perusahaan"
@@ -39,7 +30,6 @@ export default function Navbar({ isOpen, setIsOpen, navItems }: NavbarProps) {
             height={120}
             className="rounded-full filter brightness-0 invert"
           />
-
           <div className="hidden sm:flex items-center gap-6 ml-auto">
             {navItems.map(({ to, label }) => (
               <Link
@@ -50,18 +40,15 @@ export default function Navbar({ isOpen, setIsOpen, navItems }: NavbarProps) {
                 {label}
               </Link>
             ))}
-
             <button
               className="text-xs px-3 py-1 border border-purple-300 bg-purple-300 text-gray-800 font-bold rounded-full hover:bg-yellow-400 hover:text-black"
             >
               Logout
             </button>
-
             <ConnectButton.Custom>
               {({ account, chain, openConnectModal, openAccountModal, openChainModal, mounted }) => {
                 const ready = mounted;
                 const connected = ready && account && chain;
-
                 return (
                   <div
                     {...(!ready && {
@@ -100,10 +87,9 @@ export default function Navbar({ isOpen, setIsOpen, navItems }: NavbarProps) {
               }}
             </ConnectButton.Custom>
           </div>
-
         </div>
-
-
+        
+        {/* Navbar Mobile Mancer */}
         {isOpen && (
           <div
             className="sm:hidden flex flex-col gap-3 px-4 py-5 
@@ -129,15 +115,13 @@ export default function Navbar({ isOpen, setIsOpen, navItems }: NavbarProps) {
                   ></span>
                 </Link>
               ))}
-
-              {/* ✅ Tambahkan ini: */}
               <ConnectButton.Custom>
                 {({ account, chain, openConnectModal, openAccountModal, openChainModal, mounted }) => {
                   const ready = mounted;
                   const connected = ready && account && chain;
 
                   return (
-                    <div className="w-full"  // ✅ Container full width
+                    <div className="w-full"
                       {...(!ready && {
                         'aria-hidden': true,
                         style: { opacity: 0, pointerEvents: 'none', userSelect: 'none' },
@@ -169,7 +153,6 @@ export default function Navbar({ isOpen, setIsOpen, navItems }: NavbarProps) {
                   );
                 }}
               </ConnectButton.Custom>
-
               <button
                 onClick={handleLogout}
                 className="mt-3 px-3 py-2 bg-yellow-200 text-gray-900 rounded-md 

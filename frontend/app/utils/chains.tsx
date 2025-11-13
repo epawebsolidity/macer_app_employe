@@ -1,7 +1,7 @@
 import { defineChain } from 'viem';
 
 export const eduChainTestnet = defineChain({
-  id: 656476, // contoh, pastikan ID chain benar
+  id: 656476,
   name: 'EduChain Testnet',
   network: 'educhain-testnet',
   nativeCurrency: {
@@ -11,7 +11,7 @@ export const eduChainTestnet = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://open-campus-codex-sepolia.drpc.org'], // ganti dengan RPC resmi
+      http: ['https://open-campus-codex-sepolia.drpc.org'],
     },
     public: {
       http: ['https://open-campus-codex-sepolia.drpc.org'],
@@ -20,7 +20,7 @@ export const eduChainTestnet = defineChain({
   blockExplorers: {
     default: {
       name: 'EduChainScan',
-      url: 'https://testnet.eduscan.io', // contoh
+      url: 'https://testnet.eduscan.io',
     },
   },
   testnet: true,
