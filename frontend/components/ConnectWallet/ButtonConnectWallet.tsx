@@ -4,30 +4,54 @@ import { createWalletUser, deleteWalletUser, getWalletByUserId } from "@/app/hoo
 import { getUserIdFromToken } from "@/app/utils/cookies";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useEffect } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 
 export default function ButtonConnectWallet() {
+    const { disconnect } = useDisconnect();
     const { address, isConnected, isConnecting } = useAccount();
 
     useEffect(() => {
         const handleWallet = async () => {
+
             const userId = getUserIdFromToken();
             if (!userId) return;
-            if (isConnecting) return;
+
+            if (isConnecting) return; // jangan eksekusi saat transisi
+
+            // === Jika tidak connect wallet → hapus wallet user ===
             if (!isConnected || !address) {
                 await deleteWalletUser(userId);
                 console.log("Wallet deleted because user disconnected");
                 return;
             }
+
+            // === Cek wallet milik user ===
             const checkingWallet = await getWalletByUserId(userId);
+            console.log("Checking wallet:", checkingWallet);
+
+            // === Jika user belum punya wallet → buat ===
             if (!checkingWallet) {
                 await createWalletUser(userId, address);
                 console.log("Wallet created");
                 return;
             }
+
+            // === Cek apakah wallet di DB sama dengan yang connect sekarang ===
+            if (checkingWallet.address_wallet !== address) {
+                console.log("Wallet belongs to another user!");
+
+                // Disconnect wallet langsung, bukan delete
+                await disconnect();
+
+                return;
+            }
+
+            console.log("Wallet OK");
         };
+
         handleWallet();
-    }, [isConnected, address, isConnecting]);
+    }, [isConnected, address, isConnecting, disconnect]);
+  
 
     return (
         <>
