@@ -59,8 +59,7 @@ export const authController = async (req, res) => {
       accessToken,
       refreshToken,
       user: {
-        id: data.id,
-        name: data.name,
+        id: data.id_users,
         email: data.email,
         role: data.role,
       },
@@ -71,8 +70,6 @@ export const authController = async (req, res) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-
 
 export const refreshController = async (req, res) => {
   try {
@@ -91,20 +88,20 @@ export const refreshController = async (req, res) => {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 
     const newAccessToken = jwt.sign(
-      { id: decoded.id_users, email: decoded.email, role: decoded.role },
+      { id: decoded.id, email: decoded.email, role: decoded.role },
       process.env.JWT_SECRET,
       { expiresIn: "30s" }
     );
 
     const newRefreshToken = jwt.sign(
-      { id: decoded.id_users, email: decoded.email, role: decoded.role },
+      { id: decoded.id, email: decoded.email, role: decoded.role },
       process.env.JWT_REFRESH_SECRET,
       { expiresIn: "7d" }
     );
 
     await db.query(
       "UPDATE token SET access_token = ?, refresh_token = ? WHERE id_users = ?",
-      [newAccessToken, newRefreshToken, decoded.id_users]
+      [newAccessToken, newRefreshToken, decoded.id]
     );
 
      res.cookie("refreshToken", refreshToken, {
@@ -124,14 +121,16 @@ export const refreshController = async (req, res) => {
 
 
 export const logoutController = async (req, res) => {
-  const { refreshToken } = req.body;
-  if (!refreshToken) return res.status(400).json({ message: "Refresh token required" });
-  await db.query("UPDATE users SET refresh_token = NULL WHERE refresh_token = ?", [
-    refreshToken,
-  ]);
+  try {
+    res.clearCookie("accessToken", { httpOnly: true, sameSite: "strict", secure: true });
+    res.clearCookie("refreshToken", { httpOnly: true, sameSite: "strict", secure: true });
 
-  return res.status(200).json({ message: "Logged out" });
+    return res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Logout error", error });
+  }
 };
+
 
 
 export const checkAuthUsers = (req, res, next) => {

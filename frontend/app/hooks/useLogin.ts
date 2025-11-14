@@ -19,16 +19,17 @@ export const AuthLoginMancer = async (email: string, password: string) => {
       email,
       password
     );
+
     const user = userCredential.user;
 
-    Cookies.set("authCookies", user.accessToken, {
+    const token = await user.getIdToken();
+
+    Cookies.set("authCookies", token, {
       path: "/",
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
       expires: 1,
     });
-
-    console.log("Login sukses:", user?.accessToken);
     return { user, error: null };
   } catch (err: unknown) {
     if (err instanceof Error) {
@@ -68,6 +69,17 @@ export const loginMancer = async (email: string, password: string) => {
 export const checkUsers = async () => {
   try {
     const response = await api.get("/auth/checkUsers");
+    return response.data;
+  } catch (err: unknown) {
+    if (err instanceof Error) return { user: null, error: err.message };
+    return { user: null, error: "Unknown error" };
+  }
+};
+
+
+export const UsersLogout = async () => {
+  try {
+    const response = await api.post("/auth/logout");
     return response.data;
   } catch (err: unknown) {
     if (err instanceof Error) return { user: null, error: err.message };
