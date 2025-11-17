@@ -9,3 +9,14 @@ export const EmployeUsers = async () => {
     return { user: null, error: "Unknown error" };
   }
 };
+
+export const EmployeUsersById = async (id_users: number) => {
+  try {
+    const response = await api.get(`/employee/${id_users}`);
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    if (err instanceof Error) return { user: null, error: err.message };
+    return { user: null, error: "Unknown error" };
+  }
+};

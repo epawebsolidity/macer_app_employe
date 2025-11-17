@@ -29,7 +29,10 @@ api.interceptors.response.use(
             { withCredentials: true }
           );
           const newAccessToken = res.data.accessToken;
-          Cookies.set("accessToken", newAccessToken, { path: "/" });
+          Cookies.set("accessToken", newAccessToken, {
+            path: "/",
+            expires: 1,
+          });
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           isRefreshing = false;
           return api(originalRequest);

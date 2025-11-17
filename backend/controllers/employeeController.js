@@ -14,26 +14,14 @@ export const getEmployees = async (req, res) => {
 };
 
 export const getJoinEmployeByUserId = async (req, res) => {
-  const { id } = req.params;
+  const { id_users } = req.params;
   try {
-    const [rows] = await db.query(`
-      SELECT 
-        e.id_employe,
-        e.name AS employee_name,
-        e.position,
-        u.id_users,
-        u.username,
-        u.email
-      FROM employe e
-      JOIN users u ON e.id_users = u.id_users
-      WHERE u.id_users = ?
-    `, [id]);
-
+    const [rows] = await db.query(`SELECT * FROM employe WHERE id_users = ?`, [id_users]);
     res.status(200).json({
       success: true,
       data: rows,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching employee data" });
+    res.status(500).json({ message: "Error fetching wallet data" });
   }
 };

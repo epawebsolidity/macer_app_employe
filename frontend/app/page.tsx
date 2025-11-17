@@ -1,6 +1,6 @@
 "use client";
 
-import { loginMancer } from "@/app/hooks/useLogin";
+import { useAuthWallet } from "@/app/hooks/useAuthWallet";
 import logo from "@/public/assets/images/logo-mancer.png";
 import { Poppins } from "next/font/google";
 import Image from "next/image";
@@ -17,13 +17,15 @@ export default function LoginPage() {
 
   const router = useRouter();
 
+  const { loginWithClearWallet } = useAuthWallet();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const { user, error: loginError } = await loginMancer(email, password);
+      const { user, error: loginError } = await loginWithClearWallet(email, password);
       setLoading(false);
       console.log("User setelah login:", user);
       if (loginError) {

@@ -19,7 +19,6 @@ export const AuthLoginMancer = async (email: string, password: string) => {
       email,
       password
     );
-
     const user = userCredential.user;
 
     const token = await user.getIdToken();
@@ -30,23 +29,23 @@ export const AuthLoginMancer = async (email: string, password: string) => {
       sameSite: "strict",
       expires: 1,
     });
+
     return { user, error: null };
   } catch (err: unknown) {
-    if (err instanceof Error) {
-      console.error("Error login:", err.message);
-      return { user: null, error: err.message };
-    }
+    if (err instanceof Error) return { user: null, error: err.message };
     return { user: null, error: "Unknown error" };
   }
 };
 
 export const loginBackend = async (email: string, password: string) => {
   try {
-    const response = await api.post("/auth", {
-      email,
-      password,
+    const response = await api.post("/auth", { email, password });
+
+    Cookies.set("accessToken", response.data?.accessToken, {
+      path: "/",
+      expires: 1,
     });
-    Cookies.set("accessToken", response.data?.accessToken, { path: "/", expires: 1 });
+
     return response.data;
   } catch (err: unknown) {
     if (err instanceof Error) return { user: null, error: err.message };
@@ -54,17 +53,15 @@ export const loginBackend = async (email: string, password: string) => {
   }
 };
 
-
 export const loginMancer = async (email: string, password: string) => {
   const backendResult = await loginBackend(email, password);
+  if (backendResult.error) return backendResult;
 
-  if (backendResult.error) return { user: null, error: backendResult.error };
   const firebaseResult = await AuthLoginMancer(email, password);
+  if (firebaseResult.error) return firebaseResult;
 
-  if (firebaseResult.error) return { user: null, error: firebaseResult.error };
   return { user: backendResult.user, error: null };
 };
-
 
 export const checkUsers = async () => {
   try {
@@ -75,7 +72,6 @@ export const checkUsers = async () => {
     return { user: null, error: "Unknown error" };
   }
 };
-
 
 export const UsersLogout = async () => {
   try {
