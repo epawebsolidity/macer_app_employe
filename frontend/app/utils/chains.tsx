@@ -11,10 +11,10 @@ export const eduChainTestnet = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://open-campus-codex-sepolia.drpc.org'],
+      http: ['https://rpc.open-campus-codex.gelato.digital'],
     },
     public: {
-      http: ['https://open-campus-codex-sepolia.drpc.org'],
+      http: ['https://rpc.open-campus-codex.gelato.digital'],
     },
   },
   blockExplorers: {

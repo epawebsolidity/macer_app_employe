@@ -7,9 +7,9 @@ export function middleware(req: NextRequest) {
 
   const token = req.cookies.get("accessToken")?.value;
 
-  if (!token && pathname.startsWith("/features")) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+  // if (!token && pathname.startsWith("/features")) {
+  //   return NextResponse.redirect(new URL("/", req.url));
+  // }
 
 
   let userData: any;
