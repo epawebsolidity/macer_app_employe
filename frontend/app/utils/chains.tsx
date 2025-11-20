@@ -24,4 +24,8 @@ export const eduChainTestnet = defineChain({
     },
   },
   testnet: true,
+  fees: {
+    defaultPriorityFee: () => 1n,      // 1 wei
+    defaultBaseFee: () => 1000000000n, // 1 gwei
+  },
 });
