@@ -39,7 +39,7 @@ api.interceptors.response.use(
         } catch (err) {
           isRefreshing = false;
           console.error("Refresh token expired, harus login ulang.");
-          window.location.href = "/";
+          //window.location.href = "/";
           return Promise.reject(err);
         }
       }
